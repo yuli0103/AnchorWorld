@@ -1,0 +1,109 @@
+\section{Method}\label{sec:3}
+
+Given a sequence of human actions and a customizable world specification, our goal is to synthesize an egocentric video that reflects how a user navigates and interacts within the defined environment. 
+To this end, AnchorWorld takes two types of control signals as input: embodied human motion for action control, and pose-associated anchor views for world customization.
+We instantiate AnchorWorld with Wan~\cite{wan2025wan}, a flow-matching-based~\cite{lipman2022flow} DiT~\citep{peebles2023scalable} video generation model, and condition its video synthesis on the action and anchor-view signals.
+The human motion is represented as a sequence of body actions derived from the SMPL-X parametric body model~\cite{pavlakos2019expressive}, denoted as
+$M \in \sR^{f \times k \times 6}$, where $f$ is the number of frames and $k$ is the number of joints. 
+Each joint state consists of its 3D position and 3D axis-angle rotation vector. 
+The customizable world is defined by an initial egocentric view $I_0$ and a set of localized anchor views $\gS = \{ (\vI_i, \vc_i, \vt_i) \}_{i=1}^n$. 
+Each anchor view contains an RGB image $\vI_i$, a 6-DoF viewpoint pose $\vc_i = [\mR_i \mid \vp_i] \in \sR^{3 \times 4}$, and an evolution prompt $\vt_i$ that describes the temporal change of local scene states.
+Figure~\ref{fig:method} provides an overview of the proposed framework. 
+We detail each component of our approach in the following subsections.
+
+
+
+\input{tex/figs/method}
+
+\subsection{Hybrid-View Human Action Control}\label{sec:3.1}
+
+\paragraph{Enhanced Egocentric Action Control via hybrid views.}
+Human action contains rich spatial and interaction cues: the root trajectory determines global navigation, the limbs indicate potential interactions with the surrounding scene, and the head motion induces the egocentric viewpoint.
+However, in first-person videos, most body parts are often outside the camera field of view, making direct supervision of full-body action control sparse and incomplete.
+To overcome this limitation, we introduce third-person view (TPV) videos as auxiliary training data, where the full human body and its interactions with the surrounding scene are explicitly visible.
+These videos provide rich interaction context and complete motion supervision, helping the model learn stronger spatial grounding between human motion and scene responses.
+To support joint training on both TPV and first-person view (FPV) data within a unified framework, we formulate action conditioning in a projection-based manner.
+Specifically, we represent the action condition by combining the full-body motion sequence with the camera trajectory, allowing the model to project 3D human motion into 2D visual observations under arbitrary viewpoints.
+We first pre-train the model on large-scale and diverse TPV videos, where the camera parameters correspond to the external observation viewpoint, enabling the model to acquire projection knowledge and human-scene interaction priors.
+Then, we adapt the model to egocentric simulation by aligning the camera parameters with the human head perspective in FPV data.
+This design enables more accurate human-action control and stronger spatial pose awareness.
+
+\paragraph{Spatial Pose Attention.} 
+Inspired by prior work~\cite{fu20243dtrajmaster, li2025adaviewplanner}, we inject the pose conditions through a spatial pose attention mechanism. 
+Specifically, a motion encoder first projects the input motion sequence $M \in \sR^{f \times k \times 6}$ into a latent embedding $\vz_m \in \sR^{f' \times k \times d}$, where $d$ is the model's hidden dimension. To ensure temporal alignment with the VAE-encoded~\cite{kingma2013auto} video latents, we employ temporal downsampling to match the temporal resolution $f'$. Analogously, a camera encoder processes the camera pose sequence $C \in \sR^{f \times 3 \times 4}$ into $\vz_c \in \sR^{f' \times 1 \times d}$, where the camera pose can represent either a third-person observation viewpoint or the first-person head viewpoint.
+
+To exploit the inherent frame-wise correspondence between motion and video tokens, we concatenate the video tokens $\vz_v^{(t)}$ with the human motion tokens $\vz_m$ and camera pose tokens $\vz_c$ along the spatial dimension. This unified sequence is then processed by the spatial self-attention block:
+
+\[
+\begin{gathered}
+\mT = [\vz_v^{(t)}; \vz_m; \vz_c] \in \sR^{f' \times (h \cdot w + k + 1) \times d}, \\
+\vz_v^{(t)} = \vz_v^{(t)} + \text{Truncate}\left(\text{Attn}(\mW_Q \cdot \mT, \mW_K \cdot \mT, \mW_V \cdot \mT)\right)
+\end{gathered}
+\tag{1}
+\]
+
+The Truncate operator discards the auxiliary pose tokens, retaining only the updated video features.
+
+
+
+\subsection{Evolvable Anchor-View Customization}\label{sec:3.2}
+
+To enable evolvable world customization, we represent the environment with a set of anchor views. 
+Each anchor view provides three types of localized world priors: an RGB image for visual appearance, a 3D pose for spatial grounding, and an evolution prompt for temporal state evolution. 
+
+\paragraph{In-Context Anchor-View Priors.}
+To incorporate anchor-view image priors while preserving the generative capability of the pre-trained video model, we adopt an in-context conditioning strategy~\cite{huang2026cinescene, ju2025fulldit, ye2025unic}. 
+Specifically, the images of anchor views are encoded into latent tokens $\vz_s \in \sR^{f_s \times h \cdot w \times d}$, which are concatenated with the video latent tokens $\vz_v^{(t)} \in \sR^{f' \times h \cdot w \times d}$ along the frame dimension:
+\[
+    \mathcal{T}_{total} = [\vz_v^{(t)}; \vz_s] \in \sR^{(f' + f_s) \times h \cdot w \times d}. \tag{2}
+\]
+
+This design enables anchor views to guide world synthesis in-context, without requiring architectural modifications to the base model. We further employ 3D RoPE~\cite{su2024roformer} to differentiate anchor views by assigning them distinct frame-axis positions in the positional embedding space.
+
+\input{tex/figs/train}
+
+
+\paragraph{View Pose Injection.}
+Since each view corresponds to a specific 3D location in the world, its spatial pose is essential for grounding the customized content. 
+We therefore inject pose information for both generated video frames and anchor views. 
+The camera poses are encoded into embeddings $\vz_{pose} \in \sR^{(f' + f_s) \times 1 \times d}$ and spatially broadcast to match the latent resolution, yielding $\vz_{pose} \in \sR^{(f' + f_s) \times h \cdot w \times d}$. 
+Before the self-attention layers, the pose embeddings are added to the visual tokens:
+\[
+    \mathcal{T}_{total} = \mathcal{T}_{total} + \vz_{pose}. \tag{3}
+\]
+
+By coupling visual tokens with spatial poses, the model can distinguish anchor views located at different positions and associate the generated egocentric trajectory with the correct local constraints. 
+% This pose-aware formulation helps maintain scene consistency when the user approaches, revisits, or moves across anchored regions.
+
+\paragraph{Text-Driven Anchor-View Evolution.}
+To enable dynamic world customization, each anchor view is paired with a localized evolution description $\vt_i$ that specifies its temporal scene changes.
+We inject these descriptions through cross-attention, leveraging the semantic priors of the pre-trained video model.
+To preserve the locality of dynamic instructions, we restrict the interaction between text prompts and visual tokens using an attention mask. 
+For a text prompt $\vt_j$, its text keys are visible only to the generated video tokens and the corresponding anchor-view tokens $\vz_s^{(j)}$:
+\[
+    \mathcal{M}(q, k_j) = 
+    \begin{cases} 
+    0, & \text{if } q \in \vz_v \text{ or } q \in \vz_s^{(j)}, \\
+    -\infty, & \text{otherwise}.
+    \end{cases} \tag{4}
+\]
+This masked cross-attention enables anchor-specific text control, allowing local scene states to evolve over time while reducing interference across different anchor views.
+
+\subsection{Progressive Multi-Stage Training Strategy}\label{sec:3.3}
+
+To progressively equip the model with egocentric human action control and evolvable anchor-view customization, we adopt a multi-stage training strategy, as illustrated in Figure~\ref{fig:train}. 
+%
+\textbf{Stage I \& II: Hybrid-View Action Control Training.}
+We train the model to learn action-conditioned generation from hybrid viewpoints, where TPV videos provide complete full-body motion supervision.
+% and FPV videos adapt the model to egocentric simulation.
+In Stage I, the model is trained on large-scale third-person videos, where the camera parameters represent external observation viewpoints.
+In Stage II, we then adapt the model to first-person videos by aligning the camera trajectory with the head pose of the character.
+%
+\textbf{Stage III \& IV: Evolvable Anchor-View Customization Training.}
+After establishing action controllability, we train the model to incorporate anchor-view priors for world customization.
+In Stage III, we train the model on static scenes to learn pose-aware anchor-view conditioning for consistent egocentric roaming.
+In Stage IV, we mix in dynamic data with evolution descriptions to model text-driven local state changes.
+
+
+
+

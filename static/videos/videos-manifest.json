@@ -1,0 +1,208 @@
+{
+  "comparisons": [
+    {
+      "title": "Egocentric Action Control",
+      "items": [
+        {
+          "label": "In-Domain",
+          "videos": [
+            "static/videos/comparisons/egocentric_action/in_domain/0001.mp4",
+            "static/videos/comparisons/egocentric_action/in_domain/0002.mp4",
+            "static/videos/comparisons/egocentric_action/in_domain/0003.mp4",
+            "static/videos/comparisons/egocentric_action/in_domain/0004.mp4"
+          ]
+        },
+        {
+          "label": "Real World",
+          "videos": [
+            "static/videos/comparisons/egocentric_action/real_world/0001.mp4",
+            "static/videos/comparisons/egocentric_action/real_world/0002.mp4",
+            "static/videos/comparisons/egocentric_action/real_world/0003.mp4",
+            "static/videos/comparisons/egocentric_action/real_world/0004.mp4"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Static Scene",
+      "items": [
+        {
+          "label": "In-Domain",
+          "videos": [
+            "static/videos/comparisons/static_scene/in_domain/0001.mp4",
+            "static/videos/comparisons/static_scene/in_domain/0002.mp4",
+            "static/videos/comparisons/static_scene/in_domain/0003.mp4",
+            "static/videos/comparisons/static_scene/in_domain/0004.mp4"
+          ]
+        },
+        {
+          "label": "UE Scene",
+          "videos": [
+            "static/videos/comparisons/static_scene/ue_scene/0001.mp4",
+            "static/videos/comparisons/static_scene/ue_scene/0002.mp4",
+            "static/videos/comparisons/static_scene/ue_scene/0003.mp4",
+            "static/videos/comparisons/static_scene/ue_scene/0004.mp4"
+          ]
+        },
+        {
+          "label": "Real World",
+          "videos": [
+            "static/videos/comparisons/static_scene/real_world/0001.mp4",
+            "static/videos/comparisons/static_scene/real_world/0002.mp4",
+            "static/videos/comparisons/static_scene/real_world/0003.mp4",
+            "static/videos/comparisons/static_scene/real_world/0004.mp4"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Dynamic Scene",
+      "items": [
+        {
+          "label": null,
+          "videos": [
+            "static/videos/comparisons/dynamic_scene/0001.mp4",
+            "static/videos/comparisons/dynamic_scene/0002.mp4",
+            "static/videos/comparisons/dynamic_scene/0003.mp4",
+            "static/videos/comparisons/dynamic_scene/0004.mp4",
+            "static/videos/comparisons/dynamic_scene/0005.mp4",
+            "static/videos/comparisons/dynamic_scene/0006.mp4"
+          ]
+        }
+      ]
+    }
+  ],
+  "demos": [
+    {
+      "title": "Egocentric Action Control",
+      "items": [
+        {
+          "label": null,
+          "videos": [
+            "static/videos/demos/egocentric_action/in_domain/0001.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0002.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0003.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0004.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0005.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0006.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0007.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0008.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0009.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0010.mp4",
+            "static/videos/demos/egocentric_action/in_domain/0011.mp4"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Static Scene",
+      "items": [
+        {
+          "label": "In-Domain",
+          "videos": [
+            "static/videos/demos/static_scene/in_domain/0001.mp4",
+            "static/videos/demos/static_scene/in_domain/0002.mp4",
+            "static/videos/demos/static_scene/in_domain/0003.mp4",
+            "static/videos/demos/static_scene/in_domain/0004.mp4",
+            "static/videos/demos/static_scene/in_domain/0005.mp4",
+            "static/videos/demos/static_scene/in_domain/0006.mp4",
+            "static/videos/demos/static_scene/in_domain/0007.mp4",
+            "static/videos/demos/static_scene/in_domain/0008.mp4",
+            "static/videos/demos/static_scene/in_domain/0009.mp4",
+            "static/videos/demos/static_scene/in_domain/0010.mp4",
+            "static/videos/demos/static_scene/in_domain/0011.mp4",
+            "static/videos/demos/static_scene/in_domain/0012.mp4",
+            "static/videos/demos/static_scene/in_domain/0013.mp4"
+          ]
+        },
+        {
+          "label": "UE Scene",
+          "videos": [
+            "static/videos/demos/static_scene/ue_scene/0001.mp4",
+            "static/videos/demos/static_scene/ue_scene/0002.mp4",
+            "static/videos/demos/static_scene/ue_scene/0003.mp4",
+            "static/videos/demos/static_scene/ue_scene/0004.mp4"
+          ]
+        },
+        {
+          "label": "Real World",
+          "description": "By constructing test data where the anchor-view image and the first ego-view frame have no visual overlap through coordinate transfer across multiple captures, we examine whether AnchorWorld can still correctly establish spatial correspondence based on pose information. Specifically, Video 1 and Video 2 in this Real World subsection use this test setting.",
+          "videos": [
+            "static/videos/demos/static_scene/real_world/0001.mp4",
+            "static/videos/demos/static_scene/real_world/0002.mp4",
+            "static/videos/demos/static_scene/real_world/0003.mp4",
+            "static/videos/demos/static_scene/real_world/0004.mp4",
+            "static/videos/demos/static_scene/real_world/0005.mp4",
+            "static/videos/demos/static_scene/real_world/0006.mp4",
+            "static/videos/demos/static_scene/real_world/0007.mp4",
+            "static/videos/demos/static_scene/real_world/0008.mp4"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Dynamic Text Control",
+      "items": [
+        {
+          "label": null,
+          "videos": [
+            "static/videos/demos/dynamic_text_control/0001.mp4",
+            "static/videos/demos/dynamic_text_control/0002.mp4",
+            "static/videos/demos/dynamic_text_control/0003.mp4",
+            "static/videos/demos/dynamic_text_control/0004.mp4",
+            "static/videos/demos/dynamic_text_control/0005.mp4",
+            "static/videos/demos/dynamic_text_control/0006.mp4",
+            "static/videos/demos/dynamic_text_control/0007.mp4",
+            "static/videos/demos/dynamic_text_control/0008.mp4",
+            "static/videos/demos/dynamic_text_control/0009.mp4",
+            "static/videos/demos/dynamic_text_control/0010.mp4",
+            "static/videos/demos/dynamic_text_control/0011.mp4",
+            "static/videos/demos/dynamic_text_control/0012.mp4"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Out-of-View Scene Evolution",
+      "description": "This section evaluates whether the model can infer scene dynamics beyond the initially observed egocentric view. Another person appears in the anchor view but is invisible from the egocentric perspective, becoming visible only after a viewpoint change by the first-person player. We alter the timing of the viewpoint transition by editing the egocentric human motion, such as deleting or duplicating a human pose segment, and examine whether the generated scene evolution remains temporally consistent. Human Action 1 and Result 1 form one paired result, while Human Action 2 and Result 2 form another.",
+      "items": [
+        {
+          "label": null,
+          "videos": [
+            "static/videos/demos/out_of_view_evolution/0001.mp4",
+            "static/videos/demos/out_of_view_evolution/0002.mp4"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Spatial Pose Awareness",
+      "description": "This section evaluates the model's spatial pose awareness by horizontally flipping the human and anchor-view poses while keeping the anchor-view image fixed. This creates both overlapping and non-overlapping view settings, allowing us to examine whether the model can capture spatial pose relationships and retrieve appearance details from the anchor view when the poses overlap.",
+      "items": [
+        {
+          "label": null,
+          "videos": [
+            "static/videos/demos/spatial_pose_awareness/0001.mp4",
+            "static/videos/demos/spatial_pose_awareness/0002.mp4",
+            "static/videos/demos/spatial_pose_awareness/0003.mp4"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Third-Person Human Action Control",
+      "items": [
+        {
+          "label": null,
+          "videos": [
+            "static/videos/demos/third_person_action/0001.mp4",
+            "static/videos/demos/third_person_action/0002.mp4",
+            "static/videos/demos/third_person_action/0003.mp4",
+            "static/videos/demos/third_person_action/0004.mp4",
+            "static/videos/demos/third_person_action/0005.mp4"
+          ]
+        }
+      ]
+    }
+  ]
+}

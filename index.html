@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="title" content="AnchorWorld: Embodied Egocentric World Simulation with View-based Evolution Customization">
+  <meta name="description" content="AnchorWorld enables embodied egocentric world simulation with human-motion action control and pose-associated anchor views for localized scene customization and evolution.">
+  <meta name="keywords" content="AnchorWorld, embodied AI, egocentric video generation, world model, anchor views, human action control, scene evolution, video diffusion">
+  <meta name="author" content="Yu Li, Menghan Xia, Gongye Liu, Xintao Wang, Conglang Zhang, Lei Ke, Yuxuan Lin, Ruihang Chu, Pengfei Wan, Kun Gai, Yujiu Yang">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AnchorWorld Project">
+  <meta property="og:title" content="AnchorWorld: Embodied Egocentric World Simulation with View-based Evolution Customization">
+  <meta property="og:description" content="A framework for human-motion-driven egocentric world simulation with localized anchor-view customization and text-driven scene evolution.">
+  <meta property="og:url" content="https://yuli0103.github.io/AnchorWorld/">
+  <meta property="og:image" content="https://yuli0103.github.io/AnchorWorld/static/images/anchorworld_teaser.png">
+  <meta property="og:image:alt" content="AnchorWorld project teaser">
+  <meta property="article:published_time" content="2026-05-15T00:00:00.000Z">
+  <meta property="article:author" content="Yu Li">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="Embodied AI">
+  <meta property="article:tag" content="World Models">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AnchorWorld">
+  <meta name="twitter:description" content="Embodied egocentric world simulation with view-based evolution customization.">
+  <meta name="twitter:image" content="https://yuli0103.github.io/AnchorWorld/static/images/anchorworld_teaser.png">
+  <meta name="twitter:image:alt" content="AnchorWorld project teaser">
+
+  <meta name="citation_title" content="AnchorWorld: Embodied Egocentric World Simulation with View-based Evolution Customization">
+  <meta name="citation_author" content="Li, Yu">
+  <meta name="citation_author" content="Xia, Menghan">
+  <meta name="citation_author" content="Liu, Gongye">
+  <meta name="citation_author" content="Wang, Xintao">
+  <meta name="citation_author" content="Zhang, Conglang">
+  <meta name="citation_author" content="Ke, Lei">
+  <meta name="citation_author" content="Lin, Yuxuan">
+  <meta name="citation_author" content="Chu, Ruihang">
+  <meta name="citation_author" content="Wan, Pengfei">
+  <meta name="citation_author" content="Gai, Kun">
+  <meta name="citation_author" content="Yang, Yujiu">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="Preprint">
+  <meta name="citation_pdf_url" content="https://yuli0103.github.io/AnchorWorld/AnchorWorld.pdf">
+
+  <meta name="theme-color" content="#1e516f">
+  <meta name="msapplication-TileColor" content="#1e516f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <title>AnchorWorld: Embodied Egocentric World Simulation with View-based Evolution Customization</title>
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "AnchorWorld: Embodied Egocentric World Simulation with View-based Evolution Customization",
+    "description": "AnchorWorld advances egocentric simulation with embodied human action control and pose-associated anchor views for localized world customization and evolution.",
+    "author": [
+      {"@type": "Person", "name": "Yu Li", "affiliation": {"@type": "Organization", "name": "Tsinghua University"}},
+      {"@type": "Person", "name": "Menghan Xia", "affiliation": {"@type": "Organization", "name": "HUST"}},
+      {"@type": "Person", "name": "Gongye Liu", "affiliation": {"@type": "Organization", "name": "HKUST"}},
+      {"@type": "Person", "name": "Xintao Wang", "affiliation": {"@type": "Organization", "name": "Kuaishou Technology"}},
+      {"@type": "Person", "name": "Conglang Zhang", "affiliation": {"@type": "Organization", "name": "Wuhan University"}},
+      {"@type": "Person", "name": "Lei Ke", "affiliation": {"@type": "Organization", "name": "Tsinghua University"}},
+      {"@type": "Person", "name": "Yuxuan Lin", "affiliation": {"@type": "Organization", "name": "Tsinghua University"}},
+      {"@type": "Person", "name": "Ruihang Chu", "affiliation": {"@type": "Organization", "name": "Tsinghua University"}},
+      {"@type": "Person", "name": "Pengfei Wan", "affiliation": {"@type": "Organization", "name": "Kuaishou Technology"}},
+      {"@type": "Person", "name": "Kun Gai", "affiliation": {"@type": "Organization", "name": "Kuaishou Technology"}},
+      {"@type": "Person", "name": "Yujiu Yang", "affiliation": {"@type": "Organization", "name": "Tsinghua University"}}
+    ],
+    "datePublished": "2026-05-15",
+    "publisher": {"@type": "Organization", "name": "Preprint"},
+    "url": "https://yuli0103.github.io/AnchorWorld/",
+    "image": "https://yuli0103.github.io/AnchorWorld/static/images/anchorworld_teaser.png",
+    "keywords": ["embodied AI", "egocentric world simulation", "world models", "video generation", "anchor views"],
+    "abstract": "Despite being a pivotal frontier, interactive world modeling remains underexplored in terms of the versatile controllability required by practical scenarios. To bridge this gap, we present AnchorWorld, a framework that advances egocentric simulation through enhanced interaction integrity and a flexible mechanism for world customization. First, we utilize 3D human motion as the primary interaction modality. To complement the out-of-view or truncated body parts in egocentric views, we introduce an auxiliary training supervision that incorporates exogenous viewpoints decoupled from the agent’s first-person sensorium. It allows the model to observe the agent's full-body positioning relative to the environment, facilitating a more robust spatial grounding of human-world interactions. Furthermore, we propose a simple yet effective mechanism for customizing self-evolving worlds. This is achieved by defining anchor views within a unified world coordinate system, coupled with textual descriptions dictating the dynamic evolution of local scenes. Experimental results show that AnchorWorld significantly outperforms state-of-the-art baselines, while ablation studies validate the effectiveness of our key designs. Notably, our customization scheme exhibits promising spatio-temporal geometric consistency and adheres strictly to the prescribed evolutionary dynamics.",
+    "isAccessibleForFree": true
+  }
+  </script>
+</head>
+
+<body>
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <main id="main-content">
+    <section class="hero publication-header anchor-hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">AnchorWorld: Embodied Egocentric World Simulation with View-based Evolution Customization</h1>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"><a href="https://scholar.google.com/citations?user=IAvHThwAAAAJ&hl=en" target="_blank">Yu Li</a><sup>1*</sup>,</span>
+                <span class="author-block"><a href="https://menghanxia.github.io/" target="_blank">Menghan Xia</a><sup>2&dagger;</sup>,</span>
+                <span class="author-block"><a href="https://gongyeliu.github.io/" target="_blank">Gongye Liu</a><sup>4</sup>,</span>
+                <span class="author-block"><a href="https://xinntao.github.io/" target="_blank">Xintao Wang</a><sup>3</sup>,</span>
+                <span class="author-block"><a href="https://zcliangyue.github.io/" target="_blank">Conglang Zhang</a><sup>5</sup>,</span>
+                <span class="author-block"><a href="#" target="_blank">Lei Ke</a><sup>1</sup>,</span>
+                <span class="author-block"><a href="#" target="_blank">Yuxuan Lin</a><sup>1</sup>,</span>
+                <span class="author-block"><a href="https://ruihang-chu.github.io/" target="_blank">Ruihang Chu</a><sup>1</sup>,</span>
+                <span class="author-block"><a href="https://scholar.google.com/citations?user=P6MraaYAAAAJ&hl=en" target="_blank">Pengfei Wan</a><sup>3</sup>,</span>
+                <span class="author-block"><a href="#" target="_blank">Kun Gai</a><sup>3</sup>,</span>
+                <span class="author-block"><a href="https://scholar.google.com/citations?hl=en&user=4gH3sxsAAAAJ&view_op=list_works" target="_blank">Yujiu Yang</a><sup>1&dagger;</sup></span>
+              </div>
+
+              <div class="is-size-5 publication-authors institution-line">
+                <span><sup>1</sup>Tsinghua University</span>
+                <span><sup>2</sup>HUST</span>
+                <span><sup>3</sup>Kling Team, Kuaishou Technology</span>
+                <span><sup>4</sup>HKUST</span>
+                <span><sup>5</sup>WHU</span>
+              </div>
+              <p class="author-note">* Work conducted during an internship at Kling Team, Kuaishou Technology. &dagger; Corresponding authors.</p>
+
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="AnchorWorld.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#comparisons" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-balance-scale"></i></span>
+                    <span>Comparisons</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#demos" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-play-circle"></i></span>
+                    <span>Demos</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code (Under Review)</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-database"></i></span>
+                    <span>Data</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section anchor-overview">
+      <div class="container is-max-desktop">
+        <div class="content">
+          <div class="method-figure hero-figure">
+            <img src="static/images/anchorworld_teaser.png" alt="AnchorWorld teaser showing egocentric video synthesis and anchor-view customization" loading="lazy">
+          </div>
+
+          <div class="method-introduction has-text-justified anchor-tldr">
+            <p>
+              <strong>TL;DR:</strong> AnchorWorld uses embodied human motion as the action signal, enabling an agent or player to explore and interact with a customized, evolvable world from a first-person perspective. Local world states are customized through a set of anchor views, where each anchor view provides an RGB image for visual appearance, a 3D pose for spatial grounding, and an evolution prompt for scene evolution.
+            </p>
+          </div>
+
+          <div class="anchor-pill-row">
+            <span class="anchor-pill">Egocentric human action control</span>
+            <span class="anchor-pill">Evolvable anchor-view customization</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Despite being a pivotal frontier, interactive world modeling remains underexplored in terms of the versatile controllability required by practical scenarios. To bridge this gap, we present AnchorWorld, a framework that advances egocentric simulation through enhanced interaction integrity and a flexible mechanism for world customization. First, we utilize 3D human motion as the primary interaction modality. To complement the out-of-view or truncated body parts in egocentric views, we introduce an auxiliary training supervision that incorporates exogenous viewpoints decoupled from the agent’s first-person sensorium. It allows the model to observe the agent's full-body positioning relative to the environment, facilitating a more robust spatial grounding of human-world interactions. Furthermore, we propose a simple yet effective mechanism for customizing self-evolving worlds. This is achieved by defining anchor views within a unified world coordinate system, coupled with textual descriptions dictating the dynamic evolution of local scenes. Experimental results show that AnchorWorld significantly outperforms state-of-the-art baselines, while ablation studies validate the effectiveness of our key designs. Notably, our customization scheme exhibits promising spatio-temporal geometric consistency and adheres strictly to the prescribed evolutionary dynamics.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Contributions</h2>
+          </div>
+        </div>
+
+        <div class="contribution-grid">
+          <article class="contribution-card">
+            <div class="contribution-icon"><i class="fas fa-street-view"></i></div>
+            <h3>Embodied Egocentric Simulation</h3>
+            <p>We formulate world-customizable embodied egocentric simulation, where human motion drives exploration and interaction inside a controllable world.</p>
+          </article>
+          <article class="contribution-card">
+            <div class="contribution-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <h3>Anchor-View Customization</h3>
+            <p>Pose-associated anchor views specify local appearance and spatial grounding, letting users define what exists at chosen 3D locations.</p>
+          </article>
+          <article class="contribution-card">
+            <div class="contribution-icon"><i class="fas fa-sync-alt"></i></div>
+            <h3>Controllable Scene Evolution</h3>
+            <p>Anchor-specific evolution prompts guide local dynamic changes while preserving spatio-temporal geometric consistency.</p>
+          </article>
+        </div>
+      </div>
+    </section> -->
+
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Method</h2>
+            <!-- <div class="content has-text-justified">
+              <p>
+                Given a human action sequence and a customized local world, AnchorWorld synthesizes an egocentric video that captures how the user moves, looks, and interacts within a customized and evolvable environment. The system leverages two complementary control signals: 3D human motion for embodied action control, and pose-associated anchor views for customizing the world’s appearance and text-guided evolution of local scene states.
+              </p>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="method-figure figure-frame">
+          <img src="static/images/anchorworld_framework.png" alt="AnchorWorld framework overview" loading="lazy">
+        </div>
+
+        <div class="method-details has-text-justified">
+          <div class="method-block">
+            <h3 class="method-subtitle">Hybrid-View Human Action Control</h3>
+            <p>
+              Human actions contain rich spatial and interaction cues, including root trajectories for global navigation, limb motions for scene interactions, and head motion for egocentric viewpoints. However, in first-person view (FPV) videos, most body parts are outside the camera view, making full-body action supervision sparse. To address this, we leverage third-person view (TPV) videos as auxiliary data, where complete human motion and scene interactions are visible.            </p>
+            <p>
+              To jointly train on TPV and FPV data, we introduce a projection-based action representation that combines full-body motion with camera trajectories. This enables 3D human motion to be projected into 2D observations under different viewpoints. The model is first pre-trained on diverse TPV videos and then adapted to egocentric simulation by aligning the camera with the human head perspective, leading to stronger action control and spatial pose awareness.            </p>
+          </div>
+
+          <div class="method-block">
+            <h3 class="method-subtitle">Evolvable Anchor-View Customization</h3>
+            <p>
+              To enable evolvable world customization, we represent the environment with a set of anchor views. Each anchor view provides three types of localized world priors: an RGB image for visual appearance, a 3D pose for spatial grounding, and an evolution prompt for temporal state evolution.             </p>
+            <p>
+              We inject anchor-view conditions without modifying the architecture of the pre-trained video model: (1) we adopt an in-context conditioning strategy by concatenating anchor-view image tokens with video latent tokens along the frame dimension; (2) we encode view poses as pose embeddings and add them to the video tokens before the self-attention layers; and (3) we inject evolution prompts into the cross-attention layers, with an attention mask enforcing each prompt to interact only with its corresponding anchor-view image tokens and video tokens.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Progressive Training</h2>
+            <!-- <div class="content has-text-justified">
+              <p>
+                The model is trained in four stages: third-person action training, first-person action adaptation, static anchor-view customization, and dynamic anchor-view evolution. This progression lets each capability build on a stable base.
+              </p>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="method-figure figure-frame">
+          <img src="static/images/anchorworld_training.png" alt="AnchorWorld progressive multi-stage training strategy" loading="lazy">
+        </div>
+
+        <div class="stage-timeline">
+          <div><span>Stage I</span> TPV action training</div>
+          <div><span>Stage II</span> FPV action training</div>
+          <div><span>Stage III</span> Static anchor customization</div>
+          <div><span>Stage IV</span> Dynamic anchor evolution</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hero is-light" id="comparisons">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Comparisons</h2>
+            <div class="content has-text-justified">
+              <p>
+                Qualitative comparisons against adapted baselines across egocentric action control, static anchor-view customization, dynamic scene evolution, and out-of-distribution scene generalization (UE and real-world scenes).
+              </p>
+              <div class="comparison-notes">
+                <p class="comparison-note-title">Baseline Settings</p>
+                <ol class="comparison-list">
+                  <li>
+                    <strong>Egocentric Action Control:</strong> We use PlayerOne <a href="https://arxiv.org/abs/2506.09995" target="_blank" rel="noopener">[1]</a> as the main baseline, which decomposes human pose into body-part controls. Since its official code was unavailable for our experiments, we re-implement it on Wan2.2 TI2V 5B using our training data, excluding hand poses for fairness due to unreliable estimation.
+                  </li>
+                  <li>
+                    <strong>Static Scene Consistency:</strong> We evaluate PlayerOne with our anchor-view injection mechanism, denoted as PlayerOne-Scene. We also compare with CaM <a href="https://arxiv.org/abs/2506.03141" target="_blank" rel="noopener">[2]</a>, which takes camera poses, scene context, and scene viewpoints as inputs, training two variants on our egocentric data (CaM-Ego) and the official UE dataset (CaM-UE).
+                  </li>
+                  <li>
+                    <strong>Dynamic Scene Evolution:</strong> Since no prior work shares the same setting, we adapt the static-scene baselines by appending evolution prompts to their global text prompts.
+                  </li>
+                </ol>
+
+                <p class="comparison-note-title">Visualization Note</p>
+                <ol class="comparison-list">
+                  <li>
+                    In the Human Action column, <strong>the rendered video visualizes the first-person player's full-body human motion as a gray 3D body and the anchor-view 3D pose as a red wireframe box</strong>; both are placed in a unified coordinate system.
+                  </li>
+                  <li>
+                    The gray 3D body shown inside the anchor view is only used to indicate the person's position in the scene for easier inspection. <strong>During inference, AnchorWorld can use a clean anchor-view image without the first-person human.</strong>
+                  </li>
+                  <li>
+                    For clearer visualization, we slightly adjust the displayed distance between the anchor-view pose and the human pose in the rendered video, while preserving their spatial relationship.
+                  </li>
+                  <li>
+                    Since the egocentric and third-person views in the dataset may be recorded by different cameras, color differences can appear across viewpoints, but they do not affect the evaluation of our method.
+                  </li>
+                  <li>
+                    Since hand-pose estimation from the egocentric dataset we use suffers from frequent out-of-view hands, occlusions, and multi-person interference, we remove hand poses from the 3D human-action joints.
+                  </li>
+                </ol>
+
+                <p class="comparison-note-title">References</p>
+                <ol class="comparison-references">
+                  <li>
+                    Yuanpeng Tu, Hao Luo, Xi Chen, Xiang Bai, Fan Wang, and Hengshuang Zhao. <a href="https://playerone-hku.github.io/" target="_blank" rel="noopener">PlayerOne: Egocentric World Simulator</a>. NeurIPS 2025.
+                  </li>
+                  <li>
+                    Jiwen Yu, Jianhong Bai, Yiran Qin, Quande Liu, Xintao Wang, Pengfei Wan, Di Zhang, and Xihui Liu. <a href="https://context-as-memory.github.io/" target="_blank" rel="noopener">Context as Memory: Scene-Consistent Interactive Long Video Generation with Memory Retrieval</a>. SIGGRAPH Asia 2025.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="comparisons-videos" class="video-sections"></div>
+      </div>
+    </section>
+
+    <section class="section" id="demos">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Demos</h2>
+            <div class="content has-text-justified">
+              <p>
+                Video demonstrations of AnchorWorld capabilities, including embodied egocentric control, anchor-view customization, dynamic text control, out-of-distribution scene generalization, out-of-view evolution, spatial pose awareness, and third-person human action control.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="demos-videos" class="video-sections"></div>
+      </div>
+    </section>
+
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="bibtex-header">
+          <h2 class="title">BibTeX</h2>
+          <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+            <i class="fas fa-copy"></i>
+            <span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <pre id="bibtex-code"><code>@article{li2026anchorworld,
+  title={AnchorWorld: Embodied Egocentric World Simulation with View-based Evolution Customization},
+  author={Li, Yu and Xia, Menghan and Liu, Gongye and Wang, Xintao and Zhang, Conglang and Ke, Lei and Lin, Yuxuan and Chu, Ruihang and Wan, Pengfei and Gai, Kun and Yang, Yujiu},
+  journal={Preprint},
+  year={2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This project page was adapted from the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>, originally adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="static/js/video-carousel.js?v=20260605-lazy"></script>
+  <script>
+    function copyBibTeX() {
+      const bibtexElement = document.getElementById('bibtex-code');
+      const button = document.querySelector('.copy-bibtex-btn');
+      const copyText = button.querySelector('.copy-text');
+      const bibtex = bibtexElement.textContent;
+
+      const showCopied = () => {
+        button.classList.add('copied');
+        copyText.textContent = 'Copied';
+        setTimeout(() => {
+          button.classList.remove('copied');
+          copyText.textContent = 'Copy';
+        }, 1800);
+      };
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(bibtex).then(showCopied).catch(() => fallbackCopy(bibtex, showCopied));
+      } else {
+        fallbackCopy(bibtex, showCopied);
+      }
+    }
+
+    function fallbackCopy(text, onCopy) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      onCopy();
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', () => {
+      const scrollButton = document.querySelector('.scroll-to-top');
+      if (window.pageYOffset > 300) {
+        scrollButton.classList.add('visible');
+      } else {
+        scrollButton.classList.remove('visible');
+      }
+    });
+  </script>
+</body>
+</html>
