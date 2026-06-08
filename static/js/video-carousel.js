@@ -7,6 +7,13 @@
 
   const MANIFEST_URL = 'static/videos/videos-manifest.json';
   const VIDEO_CONTROLS_FALLBACK_HEIGHT = 44;
+  const VIDEO_CACHE_VERSION = '20260608-compressed';
+
+  function versionedVideoSrc(src) {
+    if (!src) return src;
+    const separator = src.includes('?') ? '&' : '?';
+    return `${src}${separator}v=${VIDEO_CACHE_VERSION}`;
+  }
 
   function loadVideo(video) {
     if (!video || video.src || !video.dataset.src) return;
@@ -74,7 +81,7 @@
     video.muted = true;
     video.playsInline = true;
     video.preload = 'none';
-    video.dataset.src = src;
+    video.dataset.src = versionedVideoSrc(src);
 
     const controls = document.createElement('div');
     controls.className = 'video-controls';
