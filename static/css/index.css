@@ -799,6 +799,13 @@ a:focus {
   margin: -0.5rem 0 1.5rem;
 }
 
+.video-loading-note {
+  color: #dc2626;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-top: 0.9rem;
+}
+
 .anchor-overview {
   padding-top: 2.5rem;
 }
