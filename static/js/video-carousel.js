@@ -7,7 +7,7 @@
 
   const MANIFEST_URL = 'static/videos/videos-manifest.json';
   const VIDEO_CONTROLS_FALLBACK_HEIGHT = 44;
-  const VIDEO_CACHE_VERSION = '20260608-compressed';
+  const VIDEO_CACHE_VERSION = '20260608-quarter';
 
   function versionedVideoSrc(src) {
     if (!src) return src;
