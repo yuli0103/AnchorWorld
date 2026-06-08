@@ -806,6 +806,12 @@ a:focus {
   margin-top: 0.9rem;
 }
 
+.video-loading-note a {
+  color: inherit !important;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
 .anchor-overview {
   padding-top: 2.5rem;
 }
