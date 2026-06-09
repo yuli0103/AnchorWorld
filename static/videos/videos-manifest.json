@@ -128,8 +128,8 @@
           "label": "Real World",
           "description": "By constructing test data where the anchor-view image and the first ego-view frame have no visual overlap through coordinate transfer across multiple captures, we examine whether AnchorWorld can still correctly establish spatial correspondence based on pose information. Specifically, Video 1 and Video 2 in this Real World subsection use this test setting.",
           "videos": [
-            "static/videos/demos/static_scene/real_world/0001.mp4",
             "static/videos/demos/static_scene/real_world/0002.mp4",
+            "static/videos/demos/static_scene/real_world/0001.mp4",
             "static/videos/demos/static_scene/real_world/0003.mp4",
             "static/videos/demos/static_scene/real_world/0004.mp4",
             "static/videos/demos/static_scene/real_world/0005.mp4",
